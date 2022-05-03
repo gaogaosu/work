@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.wfs.mapper.EmpMapper">
+<resultMap type="com.wfs.bean.Empdata" id="empResultMap">
+<id property="empCd" column="empCd"/>
+<id property="name" column="name"/>
+<id property="birthday" column="birthday"/>
+<id property="nationality.nationalityName" column="nationalityName"/>
+<id property="nationality.nationalityCd" column="nationalityCd"/>
+<id property="gender.genderCd" column="genderCd"/>
+<id property="gender.genderName" column="genderName"/>
+</resultMap>
+<!-- 获取社员情报 -->
+<select id="listEmp" resultMap="empResultMap">
+ 	select e.empCd,e.name,e.birthday,n.nationalityName,n.nationalityCd,
+ 	g.genderName,g.genderCd from
+ 	empdata e,nationality n,gender g where e.nationalityCd=n.nationalityCd
+ 	and g.genderCd=e.genderCd
+</select>
+<!-- 模糊查询雇员信息 -->
+<select id="searchEmp"  parameterType="String"  resultMap="empResultMap">
+	select e.empCd,e.name,e.birthday,n.nationalityName,g.genderName from
+ 	empdata e,nationality n,gender g where e.nationalityCd=n.nationalityCd
+ 	and g.genderCd=e.genderCd and concat(empCd,name,birthday,nationalityName,genderName)
+    like "%"#{0}"%"	
+</select>
+
+<!-- 根据雇员编号查询雇员信息 -->
+<select id="getEmpData" parameterType="String" 	resultMap="empResultMap">
+	select e.empCd,e.name,e.birthday,n.nationalityName,n.nationalityCd,g.genderName,g.genderCd from
+	empdata e,nationality n,gender g where e.nationalityCd=n.nationalityCd
+	and g.genderCd=e.genderCd and e.empCd=#{empCd}
+</select>
+
+<!-- 添加雇员信息 -->
+<insert id="insertEmp" parameterType="com.wfs.form.EmpForm">
+	insert into empdata values
+	(#{empCd},#{name},#{birthday},#{nationalityCd},#{genderCd})
+</insert>
+
+<!-- 更改雇员信息 -->
+<update id="changeEmp" parameterType="com.wfs.form.EmpForm">
+	update empdata set name=#{name},birthday=#{birthday},nationalityCd=#{nationalityCd},genderCd=#{genderCd}
+	where empCd=#{empCd}
+</update>
+
+<!-- 删除雇员信息 -->
+<delete id="deleteEmp" parameterType="String">
+	delete from empdata where empCd=#{empCd}
+</delete>	
+</mapper>

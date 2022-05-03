@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+<script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="css/style.css">
+<title th:text="#{login}"></title>
+</head>
+<body>
+	<div class="header">
+		<img src="images/logo1.jpg" width="5%" />&nbsp;&nbsp;&nbsp;[[#{title}]]
+	</div>
+	<hr>
+	<br/>
+    <h1 align="center" th:text="#{login}"></h1>
+	<div id="typein" align="center">
+	<!-- 使用th:object属性：用于表单数据对象绑定，将表单绑定到后台 -->
+		<form method="post" action="/auth" th:object="${form}">
+			<table>
+			<!-- th:each 等同于for each循环 -->
+				<tr th:inline="text" th:each="message : ${errorList}">
+					<td>[[${message.defaultMessage}]]</td>
+				</tr>
+				<tr>
+					<td><p th:text="#{userid}" style="font-size:25px"></p></td>
+				</tr>
+				<tr>
+				<!-- th:placeholder="#{login.userid.placeholder}"国际化处理
+				             使用th:field属性：进行表单字段绑定
+				 -->
+					<td><input type="text" name="accountId" value="" size="40" th:field="*{accountId}"
+						th:placeholder="#{login.userid.placeholder}" onkeydown="eraseInfo();">
+					</td>
+				</tr>
+				<tr>
+					<td></td>
+				</tr>
+				<tr>
+					<td><p th:text="#{password}" style="font-size:25px"></p></td>
+				</tr>
+				<tr>
+					<td><input type="password" name="password" value="" size="40" th:field="*{password}"
+						maxlength="6" onkeydown="eraseInfo();">
+					</td>
+			</table>
+			<br/>
+			<input type="submit" class="btn btn-primary" th:attr="value=#{login}"><br>
+			<div id="show" style="color: red">
+			    <!-- エラーメッセージの表示 -->
+				<p th:text="${message}"></p>
+			</div>
+		</form>
+	</div>
+</body>
+<br/><br/><br/>
+<div class="copyright">[[#{footer}]]</div>
+</html>

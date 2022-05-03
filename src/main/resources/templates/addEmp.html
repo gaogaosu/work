@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{common/empLayout}">
+<head>
+<meta charset="UTF-8">
+<script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+<script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="css/style.css">
+<title th:text="#{title}"></title>
+</head>
+<body>
+		<div class="header">
+		<img src="images/logo1.jpg" width="5%" />&nbsp;&nbsp;&nbsp;[[#{title}]]
+	</div>
+	<hr />
+	<br />
+	<div layout:fragment="content">
+		<h1 align="center" th:text=#{empAdd}></h1>
+		<div id="div1" align="center" >
+			<form action="/login">
+				<input type="submit" th:value="#{logout}" class="btn btn-warning"></input>
+			</form>
+		</div>
+		<div align="center">
+			<form method="post" action="/addEmp" th:object="${form}">
+				<!-- 入力テーブル -->
+				<table class="addTable">
+				 <tr th:inline="text" th:each="error : ${errorList}">
+					<td>[[${error.defaultMessage}]]</td>
+				</tr>
+					<tr>
+						<td th:text="#{empCd}"></td>
+						<td><input type="text" class="form-control" id="empCd"
+							name="empCd" value=""  th:field="*{empCd}" />
+							<div class="text-danger " th:errors="*{empCd}" > </div></td>
+						<td th:text="#{need}"></td>
+					</tr>
+					<tr>
+						<td th:text="#{empName}"></td>
+						<td><input type="text" class="form-control" id="name"
+							name="name" value=""   th:field="*{name}" /></td>
+						<td th:text="#{need}"></td>
+					</tr>
+					<tr>
+						<td th:text="#{gender}"></td>
+						<td><select th:field="*{genderCd}" class="form-control">
+								<option value=""></option>
+								<option th:each="gender:${session.genderList}"
+									th:value="${gender.genderCd}" th:text="${gender.genderName}"></option>
+						</select></td>
+						<td th:text="#{need}"></td>
+					</tr>
+					<tr>
+						<td th:text="#{birthday}"></td>
+						<td><input type="date" class="form-control" id="birthday"
+							name="birthday"  value=""  th:field="*{birthday}" /></td>
+						<td th:text="#{need}"></td>
+					</tr>
+					<tr>
+						<td th:text="#{nationality}"></td>
+						<td><select th:field="*{nationalityCd}" class="form-control">
+								<option value=""></option>
+								<option th:each="n:${session.nationalityList}"
+									th:value="${n.nationalityCd}" th:text="${n.nationalityName}"></option>
+						</select></td>
+						<td th:text="#{need}"></td>
+					</tr>
+				</table>
+				<br>
+			<div align="center">				
+				<input type="submit" class="btn btn-primary"  th:value="#{confirm}"></input>
+				<input type="reset" class="btn btn-primary"  th:value="#{cancel}"></input>
+				<input type="button"  class="btn btn-primary"  th:value="#{back}"  onClick="window.location.href='/empList'">
+				<!--  
+				<button class="btn btn-primary"  th:value="#{back}"  th:action="@{/empList}"></button>
+				-->
+			</div>
+			</form>
+		</div>
+		<div id="aligncenter" style="color: red">
+			<p th:text="${message}"></p>
+		</div>
+	</div>
+</body>
+<br/><br/><br/>
+<div class="copyright">[[#{footer}]]</div>
+</html>
